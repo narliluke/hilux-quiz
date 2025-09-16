@@ -202,9 +202,9 @@ submit.onclick = () => {
     });
   } else {
     isCorrect = selected === correct;
-    optionEls[selected]?.classList.add(isCorrect ? "correct" : "wrong");
-  }
-
+if (selected !== -1) {
+  optionEls[selected].classList.add(selected === correct ? "correct" : "wrong");
+}
   if (isCorrect) score++;
 
   const explanation = document.createElement("div");
