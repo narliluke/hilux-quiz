@@ -237,6 +237,7 @@
     };
     card.appendChild(submit);
     quiz.appendChild(card);
+    window.parent.postMessage({ type: "resize", height: document.body.scrollHeight }, "*");
   }
   function showResults() {
     quiz.innerHTML = "";
@@ -254,6 +255,9 @@
     card.appendChild(link);
 
     quiz.appendChild(card);
+    window.parent.postMessage({ type: "resize", height: document.body.scrollHeight }, "*");
+
+
   }
 
   render();
