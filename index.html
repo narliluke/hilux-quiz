@@ -81,10 +81,6 @@
       background: #f58220;
       color: #fff;
     }
-    .button.secondary {
-      background: #f3f4f6;
-      color: #111827;
-    }
     .link {
       display: inline-block;
       margin-top: 16px;
@@ -172,7 +168,86 @@
         btn.className = "option";
         btn.textContent = opt;
         btn.onclick = () => {
-          if(locked) return;
-          if(q.multi){
-            if(selected.includes(idx)){
-              selected = selected
+  if (locked) return;
+  if (q.multi) {
+    if (selected.includes(idx)) {
+      selected = selected.filter(x => x !== idx);
+      btn.classList.remove("selected");
+    } else {
+      selected.push(idx);
+      btn.classList.add("selected");
+    }
+  } else {
+    selected = idx;
+    optionEls.forEach(el => el.classList.remove("selected"));
+    btn.classList.add("selected");
+  }
+};
+optionEls.push(btn);
+card.appendChild(btn);
+});
+
+const submit = document.createElement("button");
+submit.className = "button primary";
+submit.textContent = "Submit";
+submit.onclick = () => {
+  locked = true;
+  let correct = q.correct;
+  let isCorrect = false;
+
+  if (q.multi) {
+    isCorrect = selected.every(x => correct.includes(x)) && selected.length === correct.length;
+    selected.forEach(idx => {
+      optionEls[idx].classList.add(correct.includes(idx) ? "correct" : "wrong");
+    });
+  } else {
+    isCorrect = selected === correct;
+    optionEls[selected]?.classList.add(isCorrect ? "correct" : "wrong");
+  }
+
+  if (isCorrect) score++;
+
+  const explanation = document.createElement("div");
+  explanation.className = "explanation";
+  explanation.textContent = q.ex;
+  card.appendChild(explanation);
+
+  const next = document.createElement("button");
+  next.className = "button secondary";
+  next.textContent = i < questions.length - 1 ? "Next" : "See Results";
+  next.onclick = () => {
+    i++;
+    if (i < questions.length) {
+      render();
+    } else {
+      showResults();
+    }
+  };
+  card.appendChild(next);
+};
+card.appendChild(submit);
+quiz.appendChild(card);
+}
+
+function showResults() {
+  quiz.innerHTML = "";
+  const card = document.createElement("div");
+  card.className = "card";
+  const result = document.createElement("p");
+  result.className = "question";
+  result.textContent = `You scored ${score} out of ${questions.length}`;
+  card.appendChild(result);
+
+  const link = document.createElement("a");
+  link.className = "link";
+  link.href = "https://www.ramcouk.co.uk/contact";
+  link.textContent = "Contact Ramco";
+  card.appendChild(link);
+
+  quiz.appendChild(card);
+}
+
+render();
+    </script>
+</body>
+</html>
