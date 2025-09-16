@@ -194,17 +194,18 @@ submit.onclick = () => {
   locked = true;
   let correct = q.correct;
   let isCorrect = false;
-
-  if (q.multi) {
-    isCorrect = selected.every(x => correct.includes(x)) && selected.length === correct.length;
-    selected.forEach(idx => {
-      optionEls[idx].classList.add(correct.includes(idx) ? "correct" : "wrong");
-    });
-  } else {
-if (selected !== -1) {
-  const isCorrect = selected === correct;
-  optionEls[selected].classList.add(isCorrect ? "correct" : "wrong");
+if (q.multi) {
+  isCorrect = selected.every(x => correct.includes(x)) && selected.length === correct.length;
+  selected.forEach(idx => {
+    optionEls[idx].classList.add(correct.includes(idx) ? "correct" : "wrong");
+  });
   if (isCorrect) score++;
+} else {
+  if (selected !== -1) {
+    isCorrect = selected === correct;
+    optionEls[selected].classList.add(isCorrect ? "correct" : "wrong");
+    if (isCorrect) score++;
+  }
 }
   const explanation = document.createElement("div");
   explanation.className = "explanation";
