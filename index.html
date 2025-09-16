@@ -204,11 +204,17 @@
         });
         if (isCorrect) score++;
       } else {
-        if (selected !== -1) {
-          isCorrect = selected === correct;
-          optionEls[selected].classList.add(isCorrect ? "correct" : "wrong");
-          if (isCorrect) score++;
-        }
+       if (selected !== -1) {
+  isCorrect = selected === correct;
+  optionEls.forEach((el, idx) => {
+    if (idx === correct) {
+      el.classList.add("correct");
+    } else if (idx === selected) {
+      el.classList.add("wrong");
+    }
+  });
+  if (isCorrect) score++;
+}
       }
 
       const explanation = document.createElement("div");
