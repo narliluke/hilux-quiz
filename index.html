@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hilux Quiz</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: #f9fafb;
+      margin: 0;
+      padding: 24px;
+      color: #111827;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    h2 {
+      color: #043e9b;
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 24px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.06);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .question {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .option {
+      display: block;
+      margin: 8px 0;
+      padding: 12px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      background: #fff;
+      cursor: pointer;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .option:hover {
+      box-shadow: 0 0 0 1px rgba(0,0,0,.05);
+    }
+    .option.correct {
+      border-color: #6bce1d;
+      box-shadow: 0 0 0 2px rgba(107,206,29,.2);
+    }
+    .option.wrong {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 2px rgba(239,68,68,.2);
+    }
+    .option.selected {
+      border-color: #f58220;
+      box-shadow: 0 0 0 2px rgba(245,130,32,.3);
+    }
+    .explanation {
+      margin-top: 12px;
+      font-size: 14px;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      padding: 10px 12px;
+      border-radius: 10px;
+    }
+    .button {
+      margin-top: 16px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-block;
+      border: none;
+    }
+    .button.primary {
+      background: #f58220;
+      color: #fff;
+    }
+    .button.secondary {
+      background: #f3f4f6;
+      color: #111827;
+    }
+    .link {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 10px 14px;
+      background: #043e9b;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Hilux – Quick Benefits Quiz</h2>
+    <div id="quiz"></div>
+  </div>
+
+  <script>
+    const questions = [
+      { q: "What is the Euroclass fire rating of Hilux under EN 13501-1?",
+        a: ["A1 (non-combustible)", "A2-s1,d0", "B-s1,d0", "E"], correct: 0,
+        ex: "Hilux is tested as fully non-combustible (A1, A1FL, A1L) across walls, floors, and linings." },
+      { q: "What board thickness is typically used in Hilux systems for 60- and 120-minute fire ratings?",
+        a: ["9 mm", "10 mm", "12 mm", "16 mm"], correct: 2,
+        ex: "A single 12 mm Hilux board can achieve 60/120 minutes, replacing two layers of 15 mm plasterboard." },
+      { q: "What ASTM E84 fire test results were recorded for Hilux?",
+        a: ["Flame Spread 25 / Smoke 450", "Flame Spread 0 / Smoke 5", "Flame Spread 0 / Smoke 0", "Flame Spread 75 / Smoke 200"], correct: 1,
+        ex: "Hilux achieved Class A, with Flame Spread Index (FSI) = 0 and Smoke Developed Index (SDI) = 5." },
+      { q: "Compared with gypsum plasterboard, Hilux is…",
+        a: ["Lower density and softer", "More durable, A1, moisture/mould resistant", "Lower fire rating", "The same performance but cheaper"], correct: 1,
+        ex: "Hilux outperforms plasterboard for fire, moisture, and durability, offering lower lifecycle cost." },
+      { q: "What surface spread of flame classification did Hilux achieve to BS 476 Part 7?",
+        a: ["Class 0", "Class 1", "Class 2", "Class 3"], correct: 1,
+        ex: "Hilux was independently tested to achieve the top rating under BS 476 Part 7 for surface spread of flame." },
+      { q: "What type of fibres are used in Hilux boards?",
+        a: ["Glass fibres", "100% organic cellulose fibres", "Asbestos", "Carbon fibres"], correct: 1,
+        ex: "Hilux uses safe organic fibres, not glass or asbestos, making it safer to cut and handle." },
+      { q: "What is the maximum fire partition rating achieved with Hilux in BS 476 Part 20/22 tests?",
+        a: ["1 hour", "2 hours", "3 hours", "4 hours"], correct: 3,
+        ex: "Spectro test reports confirm Hilux partitions can achieve up to 4 hours of fire resistance." },
+      { q: "Which property makes Hilux ideal for kitchens and bathrooms?",
+        a: ["High acoustic insulation", "Thermal conductivity", "Moisture and mould resistance", "Lightweight core"], correct: 2,
+        ex: "Hilux is inert to moisture, will not swell, and does not support mould or fungus." },
+      { q: "What environmental certification does Hilux carry for 2025–2030?",
+        a: ["FSC", "EPD (Environmental Product Declaration)", "BREEAM", "LEED"], correct: 1,
+        ex: "Hilux has a verified EPD valid to 2030, proving sustainability and lifecycle performance." },
+      { q: "What thermal conductivity (λ-value) has been measured for Hilux?",
+        a: ["0.50 W/mK", "0.30 W/mK", "0.147 W/mK", "0.05 W/mK"], correct: 2,
+        ex: "Hilux shows a λ-value of 0.147 W/mK, balancing fire resistance with thermal performance." },
+      { q: "Which of these are true strengths of Hilux calcium silicate boards?",
+        a: [
+          "A1 non-combustible fire rating",
+          "Resistant to moisture, mould, and termites",
+          "High screw-holding strength for heavy fixings",
+          "Good acoustic and thermal insulation performance"
+        ],
+        correct: [0,1,2,3],
+        ex: "Hilux is more than just fire safe — it resists water and mould, supports heavy loads, improves acoustics and thermal performance, and carries strong sustainability credentials.",
+        multi: true
+      }
+    ];
+
+    let i = 0, score = 0;
+    const quiz = document.getElementById("quiz");
+
+    function render(){
+      quiz.innerHTML = "";
+      const q = questions[i];
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const question = document.createElement("p");
+      question.className = "question";
+      question.textContent = q.q;
+      card.appendChild(question);
+
+      let selected = q.multi ? [] : -1;
+      let locked = false;
+
+      const optionEls = [];
+
+      q.a.forEach((opt, idx) => {
+        const btn = document.createElement("div");
+        btn.className = "option";
+        btn.textContent = opt;
+        btn.onclick = () => {
+          if(locked) return;
+          if(q.multi){
+            if(selected.includes(idx)){
+              selected = selected
